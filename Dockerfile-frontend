@@ -1,0 +1,79 @@
+#### Используем официальный образ Node.js
+###FROM node:14 as build
+###
+#### Устанавливаем директорию рабочего пространства
+###WORKDIR /app
+###
+#### Копируем файлы package.json и package-lock.json
+###COPY client/package*.json ./
+###
+#### Устанавливаем зависимости
+###RUN npm i
+###
+#### Копируем все файлы проекта в контейнер
+###COPY . .
+###
+#### Собираем React приложение
+###RUN npm run dev
+###
+#### Устанавливаем образ Nginx для запуска production-ready версии приложения
+###FROM nginx:alpine
+###
+#### Копируем собранные файлы React приложения в Nginx
+###COPY --from=build /app/build /usr/share/nginx/html
+###
+#### Открываем порт 80 для доступа к приложению
+###EXPOSE 3000
+##
+##FROM node:16-alpine
+##RUN npm install -g nodemon
+##WORKDIR /app
+##COPY package.json .
+##RUN npm install
+##COPY . .
+##EXPOSE 3000
+##CMD ["npm", "run", "dev"]
+#
+##FROM node:16-alpine
+##WORKDIR /app
+##COPY client/package.json .
+##RUN npm install
+##COPY client .
+##EXPOSE 3000
+##CMD ["node", "app.js"]
+#
+FROM node:16-alpine
+WORKDIR /app
+COPY client .
+RUN npm i
+EXPOSE 3000
+CMD ["npm", "run", "dev"]
+
+# frontend/Dockerfile
+#FROM node:16.3.0-alpine AS prod
+#
+#WORKDIR /app
+#
+#COPY client/package.json /app
+#
+#RUN npm install
+#
+#COPY client/. /app
+#
+#RUN npm run build
+#
+#FROM nginx:alpine
+#
+#WORKDIR /usr/local/bin
+#
+#COPY --from=prod /app /usr/share/nginx/html
+#
+#COPY generate-config.sh .
+#
+#COPY custom-nginx.template /etc/nginx/conf.d/
+#
+#RUN chmod +x generate-config.sh
+#
+#EXPOSE 80
+#
+#ENTRYPOINT [ "/bin/sh", "generate-config.sh"]
