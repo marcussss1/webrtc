@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+	"time"
 )
 
 // AllRooms is the global hashmap for the server
@@ -25,6 +26,9 @@ func CreateRoomRequestHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 var upgrader = websocket.Upgrader{
+	ReadBufferSize:   1024,
+	WriteBufferSize:  1024,
+	HandshakeTimeout: time.Second * 3600,
 	CheckOrigin: func(r *http.Request) bool {
 		return true
 	},

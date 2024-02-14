@@ -28,10 +28,10 @@ func main() {
 		return ctx.JSON(http.StatusOK, resp{RoomID: roomID})
 	})
 
-	e.GET("/api/v1/join", func(ctx echo.Context) error {
+	e.GET("/ws/api/v1/join", func(ctx echo.Context) error {
 		roomID := ctx.QueryParam("roomID")
 
-		ws, err := upgrader.Upgrade(ctx.Response().Writer, ctx.Request(), nil)
+		ws, err := upgrader.Upgrade(ctx.Response(), ctx.Request(), nil)
 		if err != nil {
 			log.Fatal("Web Socket Upgrade Error", err)
 		}
