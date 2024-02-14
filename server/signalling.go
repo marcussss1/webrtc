@@ -12,7 +12,7 @@ var AllRooms RoomMap
 
 // CreateRoomRequestHandler Create a Room and return roomID
 func CreateRoomRequestHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://89.208.208.189:3000")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 	roomID := AllRooms.CreateRoom()
 
@@ -57,7 +57,7 @@ func broadcaster() {
 
 // JoinRoomRequestHandler will join the client in a particular room
 func JoinRoomRequestHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://89.208.208.189:3000")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 	roomID, ok := r.URL.Query()["roomID"]
 
